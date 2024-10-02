@@ -2,14 +2,14 @@ require 'resque_scheduler'
 require 'resque/server'
 require 'json'
 
+unless defined?(::ResqueScheduler::Server::VIEW_PATH)
+  VIEW_PATH = File.join(File.dirname(__FILE__), 'server', 'views')
+end
+
 # Extend Resque::Server to add tabs
 module ResqueScheduler
   module Server
     def self.included(base)
-      unless defined?(::ResqueScheduler::Server::VIEW_PATH)
-        VIEW_PATH = File.join(File.dirname(__FILE__), 'server', 'views')
-      end
-
       base.class_eval do
         helpers do
           def format_time(t)
