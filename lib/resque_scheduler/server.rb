@@ -2,6 +2,10 @@ require 'resque_scheduler'
 require 'resque/server'
 require 'json'
 
+unless defined?(::ResqueScheduler::Server::VIEW_PATH)
+  VIEW_PATH = File.join(File.dirname(__FILE__), 'server', 'views')
+end
+
 # Extend Resque::Server to add tabs
 module ResqueScheduler
   module Server
@@ -85,6 +89,10 @@ module ResqueScheduler
             else
               config['class']
             end
+          end
+
+          def scheduler_view filename, options = {}, locals = {}
+            erb(File.read(File.join(VIEW_PATH, "#{filename}.erb")), options, locals)
           end
         end
 
